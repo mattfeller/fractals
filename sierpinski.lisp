@@ -1,0 +1,26 @@
+(defun my-tri (size depth i j)
+    (if (> (abs (- (expt 2 size) (+ 1 i))) j)
+        (char "_" 0)
+        (if (= depth 0)
+            (char "1" 0)
+            (cond
+                ((>= j (expt 2 (- size 1))) (my-tri (- size 1) (- depth 1) (mod i (expt 2 size)) (- j (expt 2 (- size 1)))))
+                ((< i (- (expt 2 (- size 1))) 1) (char "_" 0))
+                ((> i (* 3 (expt 2 (- size 1)))) (char "_" 0))
+                (t (my-tri (- size 1) (- depth 1) (- i (expt 2 (- size 1))) j))
+            )
+        )
+    )
+)
+
+(defun build (size depth)
+    (loop for b from 0 to (- (expt 2 size) 1)
+        do
+            (loop for a from 0 to (- (expt 2 (+ size 1)) 2)
+                do (write-char (my-tri size depth a b))
+            )
+            (terpri)
+    )
+)
+
+(build 5 (read))
